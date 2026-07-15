@@ -1,3 +1,5 @@
+from datetime import datetime, UTC
+
 from sqlalchemy import (
     Column,
     Integer,
@@ -6,9 +8,8 @@ from sqlalchemy import (
     DateTime,
     Boolean,
 )
-from datetime import datetime
 
-from app.db.base import Base
+from db.base import Base
 
 
 class Message(Base):
@@ -20,12 +21,14 @@ class Message(Base):
         Integer,
         ForeignKey("users.id"),
         nullable=False,
+        index=True,
     )
 
     receiver_id = Column(
         Integer,
         ForeignKey("users.id"),
         nullable=False,
+        index=True,
     )
 
     message = Column(
@@ -36,9 +39,12 @@ class Message(Base):
     is_read = Column(
         Boolean,
         default=False,
+        nullable=False,
     )
 
     created_at = Column(
-        DateTime,
-        default=datetime.utcnow,
+        DateTime(timezone=True),
+        default=lambda: datetime.now(UTC),
+        nullable=False,
+        index=True,
     )

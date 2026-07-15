@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 
-from app.db.base import Base
+from db.base import Base
 
 
 class User(Base):
@@ -12,4 +12,5 @@ class User(Base):
         String,
         unique=True,
         nullable=False,
+        index=True,
     )

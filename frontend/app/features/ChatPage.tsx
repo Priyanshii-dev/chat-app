@@ -10,15 +10,25 @@ export default function ChatPage() {
   const {
     username,
     connected,
+    connecting,
     error,
     onlineUsers,
     messagesByUser,
     connect,
     sendMessage,
     clearChat,
+    ensureHistoryLoaded,
   } = useChatSocket();
 
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
+
+  if (connecting) {
+    return (
+      <main className="flex min-h-screen items-center justify-center text-sm text-slate-400">
+        Reconnecting…
+      </main>
+    );
+  }
 
   if (!connected) {
     return <LoginScreen error={error} onConnect={connect} />;
@@ -30,7 +40,10 @@ export default function ChatPage() {
         username={username}
         onlineUsers={onlineUsers}
         selectedUser={selectedUser}
-        onSelectUser={setSelectedUser}
+        onSelectUser={(user) => {
+          setSelectedUser(user);
+          ensureHistoryLoaded(user);
+        }}
       />
 
       <section className="flex flex-1 flex-col">

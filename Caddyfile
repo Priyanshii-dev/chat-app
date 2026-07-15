@@ -2,6 +2,9 @@
     handle /ws/* {
         reverse_proxy localhost:8000
     }
+    handle /api/* {
+        reverse_proxy localhost:8000
+    }
     handle /* {
         reverse_proxy localhost:3000
     }
